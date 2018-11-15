@@ -42,7 +42,7 @@ public class Consumer {
 		while(true){
 			Delivery delivery = queueingConsumer.nextDelivery();
 			String msg = new String(delivery.getBody());
-			
+
 			System.err.println("消费端: " + msg);
 		}
 	}

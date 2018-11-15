@@ -1,4 +1,4 @@
-package com.ys.rabbitmq.api.returnlistener;
+package com.ys.rabbitmq.api.returni;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

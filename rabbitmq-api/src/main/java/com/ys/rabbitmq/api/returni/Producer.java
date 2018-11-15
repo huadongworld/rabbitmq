@@ -1,10 +1,8 @@
-package com.ys.rabbitmq.api.returnlistener;
+package com.ys.rabbitmq.api.returni;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-
-import java.io.IOException;
 
 /**
  * @author HD

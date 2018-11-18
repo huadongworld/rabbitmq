@@ -22,6 +22,7 @@ public class MyConsumer extends DefaultConsumer {
 
 	@Override
 	public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+
 		System.err.println("-----------consume message----------");
 		System.err.println("body: " + new String(body));
 		try {
@@ -29,8 +30,12 @@ public class MyConsumer extends DefaultConsumer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		//作用：一般一些业务异常，可以手工的ack是否确认应答
+
 		//当num为0：模拟接收消息失败，消息回队尾
-		if((Integer)properties.getHeaders().get("num") == 0) {
+		if ((Integer) properties.getHeaders().get("num") == 0) {
+			//第三个参数表示重回队列：true表示重回队列，false表示不重回队列
 			channel.basicNack(envelope.getDeliveryTag(), false, true);
 		} else {
 			channel.basicAck(envelope.getDeliveryTag(), false);

@@ -16,7 +16,7 @@ public class Consumer {
 
 		//1 创建ConnectionFactory
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost("192.168.1.141");
+		connectionFactory.setHost("192.168.1.140");
 		connectionFactory.setPort(5672);
 		connectionFactory.setVirtualHost("/");
 		
@@ -37,6 +37,8 @@ public class Consumer {
 		
 		//5 创建消费者 
 		QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
+
+		//6 消息回调确认 第二个参数：默认自动确认
 		channel.basicConsume(queueName, true, queueingConsumer);
 		
 		while(true){

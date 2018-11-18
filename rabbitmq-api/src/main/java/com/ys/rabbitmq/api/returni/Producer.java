@@ -13,7 +13,7 @@ public class Producer {
 	public static void main(String[] args) throws Exception {
 		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
-		connectionFactory.setHost("192.168.11.76");
+		connectionFactory.setHost("192.168.1.140");
 		connectionFactory.setPort(5672);
 		connectionFactory.setVirtualHost("/");
 		
@@ -26,7 +26,7 @@ public class Producer {
 		
 		String msg = "Hello RabbitMQ Return Message";
 
-		//java8写法
+		//设置返回监听 java8写法
 		channel.addReturnListener((replyCode, replyText, exchange1, routingKey1, properties, body) -> {
 			System.err.println("---------handle  return----------");
 			System.err.println("replyCode: " + replyCode);
@@ -37,6 +37,7 @@ public class Producer {
 			System.err.println("body: " + new String(body));
 		});
 
+		// 主要是第三个参数 mandatory，true:表示如果发送消息失败则会返回监听，false:发送消息失败自动删除消息
 		channel.basicPublish(exchange, routingKeyError, true, null, msg.getBytes());
 
 		//channel.basicPublish(exchange, routingKeyError, true, null, msg.getBytes());

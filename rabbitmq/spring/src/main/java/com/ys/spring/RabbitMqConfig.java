@@ -137,22 +137,25 @@ public class RabbitMqConfig {
 //            System.out.println(msg);
 //        });
 
-//         1.适配器方式. 默认是有自己的方法名字的：handleMessage
-         MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
-//         可以自己指定一个方法的名字: consumeMessage
-         adapter.setDefaultListenerMethod("consumeMessage");
-//         也可以添加一个转换器: 从字节数组转换为String
-         adapter.setMessageConverter(new TextMessageConverter());
-         container.setMessageListener(adapter);
-
-//         2 适配器方式: 我们的队列名称 和 方法名称 也可以进行一一的匹配
+//         //1.适配器方式. 默认是有自己的方法名字的：handleMessage
 //         MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+//         //可以自己指定一个方法的名字: consumeMessage
+//         adapter.setDefaultListenerMethod("consumeMessage");
+//         //也可以添加一个转换器: 从字节数组转换为String
 //         adapter.setMessageConverter(new TextMessageConverter());
-//         Map<String, String> queueOrTagToMethodName = new HashMap<>();
-//         queueOrTagToMethodName.put("queue001", "method1");
-//         queueOrTagToMethodName.put("queue002", "method2");
-//         adapter.setQueueOrTagToMethodName(queueOrTagToMethodName);
 //         container.setMessageListener(adapter);
+
+        //2 适配器方式: 我们的队列名称 和 方法名称 也可以进行一一的匹配
+        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageDelegate());
+
+        adapter.setMessageConverter(new TextMessageConverter());
+        Map<String, String> queueOrTagToMethodName = new HashMap<>();
+        //队列路由到指定方法
+        queueOrTagToMethodName.put("queue001", "method1");
+        queueOrTagToMethodName.put("queue002", "method2");
+
+        adapter.setQueueOrTagToMethodName(queueOrTagToMethodName);
+        container.setMessageListener(adapter);
 
         return container;
     }

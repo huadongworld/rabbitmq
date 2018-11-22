@@ -2,6 +2,7 @@ package com.ys.spring;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -102,5 +103,6 @@ public class ApplicationTests {
         Message message = new Message("mq 消息1234".getBytes(), messageProperties);
 
         rabbitTemplate.send("topic001", "spring.abc", message);
+        rabbitTemplate.send("topic002", "rabbit.abc", message);
     }
 }

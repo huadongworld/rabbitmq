@@ -1,16 +1,18 @@
 package com.ys.spring;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import com.rabbitmq.client.Channel;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.UUID;
 
 /**
  * @author HuaDong
@@ -92,4 +94,44 @@ public class RabbitMqConfig {
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         return new RabbitTemplate(connectionFactory);
     }
+
+    @Bean
+    public Queue queue_image() {
+        return new Queue("image_queue", true);
+    }
+
+    @Bean
+    public Queue queue_pdf() {
+        return new Queue("pdf_queue", true);
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
+
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        //监控队列
+        container.setQueues(queue001(), queue002(), queue003(), queue_image(), queue_pdf());
+        container.setConcurrentConsumers(1);
+        container.setMaxConcurrentConsumers(5);
+        container.setDefaultRequeueRejected(false);
+        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        container.setExposeListenerChannel(true);
+        container.setConsumerTagStrategy(queue -> queue + "_" + UUID.randomUUID().toString());
+
+        container.setMessageListener(new ChannelAwareMessageListener() {
+            @Override
+            public void onMessage(Message message, Channel channel) throws Exception {
+                String msg = new String(message.getBody());
+                System.err.println("----------消费者: " + msg);
+            }
+        });
+//        //lambda表达式写法，貌似有些问题
+//        container.setMessageListener((Message message, Channel channel) -> {
+//            String msg = new String(message.getBody());
+//            System.out.println(msg);
+//        });
+
+        return container;
+    }
+
 }

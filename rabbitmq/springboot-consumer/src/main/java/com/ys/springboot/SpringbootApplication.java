@@ -3,6 +3,10 @@ package com.ys.springboot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author HuaDong
+ * @date 2018/11/26 22:20
+ */
 @SpringBootApplication
 public class SpringbootApplication {
 

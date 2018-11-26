@@ -1,5 +1,6 @@
 package com.ys.springboot.producer;
 
+import com.ys.springboot.entity.Order;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,4 +63,20 @@ public class RabbitSender {
                 System.err.println("return exchange: " + exchange + ", routingKey: "
                         + routingKey + ", replyCode: " + replyCode + ", replyText: " + replyText);
             };
+
+
+    /**
+     * 发送消息方法调用: 构建自定义对象消息
+     *
+     * @param order
+     * @throws Exception
+     */
+    public void sendOrder(Order order) throws Exception {
+
+        rabbitTemplate.setConfirmCallback(confirmCallback);
+        rabbitTemplate.setReturnCallback(returnCallback);
+        //id + 时间戳 全局唯一
+        CorrelationData correlationData = new CorrelationData("0987654321");
+        rabbitTemplate.convertAndSend("exchange-2", "springboot.def", order, correlationData);
+    }
 }

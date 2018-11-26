@@ -8,31 +8,34 @@ import java.io.Serializable;
  */
 public class Order implements Serializable {
 
-	private String id;
+    private static final long serialVersionUID = 7353891321892094129L;
 
-	private String name;
-	
-	public Order() {
-	}
-	public Order(String id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public Order() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Order(String id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

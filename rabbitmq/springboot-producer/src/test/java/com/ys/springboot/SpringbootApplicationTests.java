@@ -38,4 +38,10 @@ public class SpringbootApplicationTests {
         rabbitSender.send("Hello RabbitMQ For Spring Boot!", properties);
     }
 
+    @Test
+    public void testSender2() throws Exception {
+        Order order = new Order("001", "第一个订单");
+        rabbitSender.sendOrder(order);
+    }
+
 }
